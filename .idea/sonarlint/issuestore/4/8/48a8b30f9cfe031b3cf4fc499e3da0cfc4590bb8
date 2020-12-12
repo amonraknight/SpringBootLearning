@@ -1,0 +1,9 @@
+
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(Áû˜Ïüÿÿÿÿ8Áö–Ÿâ.
+Z	java:S106&"9Replace this use of System.out or System.err by a logger.( –²úùÿÿÿÿ8Øæüéã.
+c
+java:S21429"FEither re-interrupt this method or rethrow the "InterruptedException".(üŸ´Â8¸ßêã.
+y
+java:S26295"\Invoke method(s) only conditionally. Use the built-in formatting to construct this argument.(ãÔƒ‹8¶¼‘êã.
+^
+java:S34575"AFormat specifiers should be used instead of string concatenation.(ãÔƒ‹8¶¼‘êã.

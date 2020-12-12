@@ -1,0 +1,6 @@
+
+Z	java:S106
+"9Replace this use of System.out or System.err by a logger.(Ψΰ•Λÿÿÿÿÿ8Βΐ°β.
+c
+java:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(δ Ή€8½„Ήβ.
+U	java:S106"9Replace this use of System.out or System.err by a logger.(σεω΅8½ΎΉβ.
