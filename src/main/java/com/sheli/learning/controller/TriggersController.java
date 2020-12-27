@@ -1,22 +1,28 @@
 package com.sheli.learning.controller;
 
+import com.sheli.learning.cashing.SimpleBookRepository;
 import com.sheli.learning.objects.AsychUser;
+import com.sheli.learning.services.BeanFactoryTestService;
 import com.sheli.learning.services.GitHubLookupService;
 import com.sheli.learning.services.MultiThreadDemoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 @RestController
+@RequestMapping("/triggers")
 public class TriggersController {
 
     private static final Logger logger = LoggerFactory.getLogger(TriggersController.class);
 
+    @Autowired
+    SimpleBookRepository simpleBookRepository;
 
     @Autowired
     MultiThreadDemoService multiThreadDemoService;
@@ -24,9 +30,21 @@ public class TriggersController {
     @Autowired
     GitHubLookupService gitHubLookupService;
 
+    @Autowired
+    BeanFactoryTestService beanFactoryTestService;
+
+    //load ApplicationContext
+    @GetMapping("/getClassesInContext")
+    public String getClassesInContext() {
+        beanFactoryTestService.showContextInfo();
+
+        beanFactoryTestService.getBeanFromFactoryBean();
+        return "getClassesInContext";
+    }
+
     @GetMapping("/concurrenttasks")
     public String triggerAJob() {
-        System.out.println("concurrenttasks");
+        logger.debug("/concurrenttasks");
         for(int i=0;i<3;i++){
             multiThreadDemoService.executeAsyncTask();
         }
@@ -35,7 +53,7 @@ public class TriggersController {
 
     @GetMapping("/githubusertest")
     public String triggerGitHubTests() {
-        System.out.println("githubusertest");
+        logger.debug("/githubusertest");
 
         // Start the clock
         long start = System.currentTimeMillis();
@@ -59,5 +77,20 @@ public class TriggersController {
         }
 
         return "githubusertest";
+    }
+
+    @GetMapping("/getCache")
+    public String getCache(){
+        logger.debug("/getCache");
+
+        logger.info(".... Fetching books");
+        logger.info("isbn-1234 -->" + simpleBookRepository.getByIsbn("isbn-1234"));
+        logger.info("isbn-4567 -->" + simpleBookRepository.getByIsbn("isbn-4567"));
+        logger.info("isbn-1234 -->" + simpleBookRepository.getByIsbn("isbn-1234"));
+        logger.info("isbn-4567 -->" + simpleBookRepository.getByIsbn("isbn-4567"));
+        logger.info("isbn-1234 -->" + simpleBookRepository.getByIsbn("isbn-1234"));
+        logger.info("isbn-1234 -->" + simpleBookRepository.getByIsbn("isbn-1234"));
+
+        return "getCache";
     }
 }
