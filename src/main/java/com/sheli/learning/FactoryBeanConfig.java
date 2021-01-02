@@ -1,4 +1,4 @@
-package com.sheli.learning.services;
+package com.sheli.learning;
 
 import com.sheli.learning.beans.factorybeans.MyFactoryBean;
 import com.sheli.learning.objects.Book;

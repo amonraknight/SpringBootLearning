@@ -2,24 +2,23 @@ package com.sheli.learning.controller;
 
 import com.sheli.learning.cashing.SimpleBookRepository;
 import com.sheli.learning.objects.AsychUser;
+import com.sheli.learning.objects.Book;
+import com.sheli.learning.objects.Car;
 import com.sheli.learning.services.BeanFactoryTestService;
+import com.sheli.learning.services.BeanImportService;
 import com.sheli.learning.services.GitHubLookupService;
 import com.sheli.learning.services.MultiThreadDemoService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+@Slf4j
 @RestController
 @RequestMapping("/triggers")
 public class TriggersController {
-
-    private static final Logger logger = LoggerFactory.getLogger(TriggersController.class);
 
     @Autowired
     SimpleBookRepository simpleBookRepository;
@@ -33,9 +32,12 @@ public class TriggersController {
     @Autowired
     BeanFactoryTestService beanFactoryTestService;
 
+    @Autowired
+    BeanImportService beanImportService;
+
     //load ApplicationContext
     @GetMapping("/getClassesInContext")
-    public String getClassesInContext() {
+    public String getClassesInContext() throws Exception {
         beanFactoryTestService.showContextInfo();
 
         beanFactoryTestService.getBeanFromFactoryBean();
@@ -44,7 +46,7 @@ public class TriggersController {
 
     @GetMapping("/concurrenttasks")
     public String triggerAJob() {
-        logger.debug("/concurrenttasks");
+        log.debug("/concurrenttasks");
         for(int i=0;i<3;i++){
             multiThreadDemoService.executeAsyncTask();
         }
@@ -53,7 +55,7 @@ public class TriggersController {
 
     @GetMapping("/githubusertest")
     public String triggerGitHubTests() {
-        logger.debug("/githubusertest");
+        log.debug("/githubusertest");
 
         // Start the clock
         long start = System.currentTimeMillis();
@@ -68,10 +70,10 @@ public class TriggersController {
             CompletableFuture.allOf(page1,page2,page3).join();
 
             // Print results, including elapsed time
-            logger.info("Elapsed time: " + (System.currentTimeMillis() - start));
-            logger.info("--> " + page1.get());
-            logger.info("--> " + page2.get());
-            logger.info("--> " + page3.get());
+            log.info("Elapsed time: " + (System.currentTimeMillis() - start));
+            log.info("--> " + page1.get());
+            log.info("--> " + page2.get());
+            log.info("--> " + page3.get());
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -81,16 +83,28 @@ public class TriggersController {
 
     @GetMapping("/getCache")
     public String getCache(){
-        logger.debug("/getCache");
+        log.debug("/getCache");
 
-        logger.info(".... Fetching books");
-        logger.info("isbn-1234 -->" + simpleBookRepository.getByIsbn("isbn-1234"));
-        logger.info("isbn-4567 -->" + simpleBookRepository.getByIsbn("isbn-4567"));
-        logger.info("isbn-1234 -->" + simpleBookRepository.getByIsbn("isbn-1234"));
-        logger.info("isbn-4567 -->" + simpleBookRepository.getByIsbn("isbn-4567"));
-        logger.info("isbn-1234 -->" + simpleBookRepository.getByIsbn("isbn-1234"));
-        logger.info("isbn-1234 -->" + simpleBookRepository.getByIsbn("isbn-1234"));
+        log.info(".... Fetching books");
+        log.info("isbn-1234 -->" + simpleBookRepository.getByIsbn("isbn-1234"));
+        log.info("isbn-4567 -->" + simpleBookRepository.getByIsbn("isbn-4567"));
+        log.info("isbn-1234 -->" + simpleBookRepository.getByIsbn("isbn-1234"));
+        log.info("isbn-4567 -->" + simpleBookRepository.getByIsbn("isbn-4567"));
+        log.info("isbn-1234 -->" + simpleBookRepository.getByIsbn("isbn-1234"));
+        log.info("isbn-1234 -->" + simpleBookRepository.getByIsbn("isbn-1234"));
 
         return "getCache";
     }
+
+    @GetMapping("/triggerBeanAcq")
+    public String triggerBeanAcq() {
+        beanImportService.checkBeansInContainer();
+        return "triggerBeanAcq";
+    }
+
+    @GetMapping("/getMyCar")
+    public Car getMyCar() {
+        return beanImportService.getMyCar();
+    }
+
 }
