@@ -107,4 +107,8 @@ public class TriggersController {
         return beanImportService.getMyCar();
     }
 
+    @PostMapping("/postABook")
+    public Book postABook(@RequestBody Book aBook) {
+        return aBook;
+    }
 }

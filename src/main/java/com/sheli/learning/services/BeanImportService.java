@@ -1,14 +1,11 @@
 package com.sheli.learning.services;
 
-import com.sheli.learning.BeanConfig;
 import com.sheli.learning.objects.AsychUser;
 import com.sheli.learning.objects.Car;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
 
 @Service
